@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff; /* Text color for contrast */
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .weather-box {
+            background: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            margin: auto;
+            color: #000; /* Dark text inside the box */
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Check Weather</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+
+    {% if data %}
+        {% if data.error %}
+            <p style="color:red">{{ data.error }}</p>
+        {% else %}
+            <div class="weather-box">
+                <h2>{{ data.name }}, {{ data.sys.country }}</h2>
+                <p><strong>Temperature:</strong> {{ data.main.temp }} &#8451;</p>
+                <p><strong>Weather:</strong> {{ data.weather.0.description|title }}</p>
+                <p><strong>Humidity:</strong> {{ data.main.humidity }}%</p>
+                <p><strong>Wind:</strong> {{ data.wind.speed }} m/s</p>
+            </div>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
